@@ -30,7 +30,6 @@ source "amazon-ebs" "ubuntu" {
     most_recent = true
     owners      = ["099720109477"]
   }
-
   # - use the ssh user-name specified in the "variables.pkr.hcl" file
   ssh_username = "${var.ssh_username}"
 }
@@ -45,6 +44,9 @@ build {
     "source.amazon-ebs.ubuntu"
   ]
   # - use the "ansible" provisioner to run the playbook in the ansible directory
+  provisioner "shell" {
+    inline = ["export ANSIBLE_HOST_KEY_CHECKING=False"]
+  }
   provisioner "ansible" {
     playbook_file = "../ansible/playbook.yml"
   }
